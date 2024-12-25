@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Union
 
 from importlib_metadata import PackageNotFoundError, version
 from PySide6.QtCore import QMimeData, QSettings, QSignalBlocker, QSize, Qt, QTimer, QUrl
-from PySide6.QtGui import QAction, QDesktopServices, QDrag, QFont, QIcon, QPalette
+from PySide6.QtGui import QAction, QDesktopServices, QDrag, QFont, QIcon, QPalette, QScreen
 from PySide6.QtWidgets import (
     QApplication,
     QColorDialog,
@@ -27,6 +27,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from streamdeck_ui import websocket
 from streamdeck_ui.api import StreamDeckServer
 from streamdeck_ui.cli.server import CLIStreamDeckServer
 from streamdeck_ui.config import (
@@ -1394,6 +1395,12 @@ def start(_exit: bool = False) -> None:
             cli.start()
 
             configure_signals(app, cli)
+
+            websocket.api = api
+            ws_server = websocket.start_server(9387, app)
+            ratio = app.devicePixelRatio()
+            plugin_server = websocket.PluginServer(ws_server, ratio, app)
+            api.streamdeck_keys.key_pressed.connect(plugin_server.handle_keypress)
 
             main_window.tray.show()
             if show_ui:
