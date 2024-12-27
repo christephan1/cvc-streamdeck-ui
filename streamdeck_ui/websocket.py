@@ -62,7 +62,7 @@ class StreamDeckWsServer(QObject):
 
 
     def process_text_message(self, message):
-        print(f'm:{message}')
+        #print(f'm:{message}')
         #if self.client_connection:
         #    for client in self.clients:
         #        client.sendTextMessage(message)
