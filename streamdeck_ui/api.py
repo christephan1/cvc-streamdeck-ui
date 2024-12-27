@@ -423,7 +423,7 @@ class StreamDeckServer:
 
             self._update_button_filters(deck_id, page, button)
             display_handler = self.display_handlers[deck_id]
-            display_handler.synchronize()
+            #display_handler.synchronize()
 
     def get_button_text_vertical_align(self, serial_number: str, page: int, button: int) -> str:
         """Gets the vertical text alignment. Values are bottom, middle-bottom, middle, middle-top, top"""
